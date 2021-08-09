@@ -1,17 +1,30 @@
 package main
 
 import (
+	"context"
 	"flag"
-	"fmt"
+	"github.com/gari8/wildyam"
+	"github.com/gari8/wildyam/domain"
 )
 
-type Recepter struct {
-	SubCmd int
-}
-
 func main() {
-	var recepter Recepter
+	var recepter domain.Recepter
 	flag.Parse()
-	fmt.Println(flag.Args())
-	fmt.Println(recepter)
+	if len(flag.Args()) > 0 {
+		arg := flag.Arg(0)
+		switch {
+		case arg == "run" || arg == "r":
+			recepter.SubCmd = domain.Run
+		case arg == "help" || arg == "h":
+			recepter.SubCmd = domain.Help
+		default:
+			recepter.SubCmd = domain.Guide
+		}
+	} else {
+		recepter.SubCmd = domain.Guide
+	}
+
+	ctx := context.Background()
+	dm := wildyam.NewDrawManager(recepter)
+	dm.Draw(ctx)
 }
