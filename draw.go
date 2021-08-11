@@ -34,16 +34,8 @@ func NewDrawManager(recep domain.Recepter) DrawManager {
 func (m drawManager) Draw(ctx context.Context) {
 	a := app.New()
 	w := a.NewWindow("WildYam")
-	currentBar := canvas.NewRectangle(theme.PrimaryColor())
-	ncon := container.NewVBox()
-
-	ncon.Resize(fyne.Size{
-		Width:  1000.0,
-		Height: 1000.0,
-	})
 
 	vcontainer := container.NewVBox(
-		currentBar,
 		container.NewHBox(
 			&widget.Select{
 				DisableableWidget: widget.DisableableWidget{},
@@ -57,13 +49,9 @@ func (m drawManager) Draw(ctx context.Context) {
 			SetForm(),
 			dialogScreen(w),
 		),
-		ncon,
 	)
 
-	vcontainer.Resize(fyne.Size{
-		Width:  500.0,
-		Height: 400.0,
-	})
+	vcontainer.MinSize()
 
 	w.SetContent(vcontainer)
 
